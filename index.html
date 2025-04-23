@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">Anas Bougraine</a>
+        <div class="search-wrapper">
+            <div class="search-container">
+              <input type="text" placeholder="Search..." />
+              <button><i class="fas fa-search"></i></button>
+            </div>
+          </div>          
+        <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="home">
+        <div class="home-img">
+            <img src="me.jpeg" alt="Profile Picture">
+        </div>
+        <div class="home-content">
+            <h1>Hi, It's <span>Anas</span></h1>
+            <h3 class="typing-text">I'm a <span></span></h3>
+            <p>Junior Engineer specializing in Networks, Telecommunications, Data Intelligence, and Machine Learning, with a focus on infrastructure optimization, intelligent signal processing, and data-driven solutions for modern communication systems.</p>
+            <div class="social-icons">
+                <a href="https://www.linkedin.com/in/anas-bougraine-b54964348/"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com/ANASSBOUGRAINE212"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <a href="https://www.linkedin.com/in/anas-bougraine-b54964348/" class="btn">Contact me</a>
+        </div>
+    </section>
+
+    <section id="about" class="section-container">
+        <div class="circle">
+            <h2>About Me :</h2>
+        </div>
+        <div class="rounded-box">
+            <p>I am an engineering student at the École Nationale des Sciences Appliquées de Tétouan (ENSA Tétouan), majoring in Network, Telecommunications Systems, and Cybersecurity Engineering. I have a growing interest in DevOps, cybersecurity, network infrastructure, and emerging technologies. Additionally, I have some experience with machine learning and enjoy exploring its applications. As I progress in my studies, I am continuously developing my problem-solving skills and expanding my technical knowledge.</p>
+        </div>
+    </section>
+
+    <section id="skills" class="section-container">
+        <div class="circle"><h2>Skills :</h2></div>
+        <div class="rounded-box">
+            <ul>
+                <li><strong>Programming Languages:</strong> Python, Java</li>
+                <li><strong>Web Development:</strong> HTML (Structure), CSS (Styling), JavaScript (Interactivity)</li>
+                <li><strong>Data Analysis & Machine Learning:</strong> 
+                    <ul>
+                        <li>Data Preprocessing – Pandas, NumPy, Scikit-learn</li>
+                        <li>ML Models – Regression, Classification</li>
+                        <li>Time Series Analysis – Forecasting, trend detection, ARIMA, etc.</li>
+                    </ul>
+                </li>
+                <li><strong>Network Protocols:</strong> TCP/IP, UDP, HTTP, FTP, DNS</li>
+                <li><strong>Hardware & Systems:</strong> 
+                    <ul>
+                        <li>LabVIEW – Visual programming for instrumentation</li>
+                        <li>VHDL – FPGA and digital circuit design</li>
+                    </ul>
+                </li>
+            </ul>
+                      
+        </div>
+    </section>
+
+    <section id="projects" class="section-container">
+        <div class="circle"><h2>Projects :</h2></div>
+        <div class="rounded-box">
+            <p>
+                I work across signal processing, digital communications, and machine learning, applying theory to real-world problems. I’ve implemented and analyzed modulation schemes like PWM, M-PSK, and M-QAM, focusing on signal modeling under realistic conditions. On the ML side, I’ve built models for classification, regression, and time series forecasting using tools like Scikit-learn, Keras, statsmodels, and Prophet. Check out my projects and code on <a href="https://github.com/ANASSBOUGRAINE212" target="_blank">GitHub</a>.
+            </p>            
+        </div>
+    </section>
+    <section class="contact" id="contact">
+        <h2 class="heading">Contact <span>Me!</span></h2>
+        
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <span>+212 6 33 09 31 28</span>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <span>anassbougraine644@gmail.com</span>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
