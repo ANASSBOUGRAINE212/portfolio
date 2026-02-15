@@ -1,0 +1,107 @@
+pipeline {
+    agent any
+    
+    environment {
+        DOCKER_IMAGE = 'portfolio-builder'
+        BUILD_TAG = "${BUILD_NUMBER}"
+        NETLIFY_SITE_ID = 'your-netlify-site-id'
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build & Test in Kubernetes') {
+            steps {
+                script {
+                    // Create Kubernetes job for build & test
+                    sh """
+                        kubectl delete job portfolio-build-${BUILD_TAG} --ignore-not-found=true
+                        kubectl create -f - <<EOF
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: portfolio-build-${BUILD_TAG}
+spec:
+  template:
+    spec:
+      containers:
+      - name: builder
+        image: node:18-alpine
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apk add --no-cache chromium
+            npm ci
+            npx playwright install-deps
+            npm test
+            echo "Build artifacts ready"
+        workingDir: /workspace
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+      volumes:
+      - name: workspace
+        hostPath:
+          path: ${WORKSPACE}
+      restartPolicy: Never
+  backoffLimit: 2
+EOF
+                    """
+                    
+                    // Wait for job to complete
+                    sh "kubectl wait --for=condition=complete --timeout=600s job/portfolio-build-${BUILD_TAG}"
+                    
+                    // Get logs
+                    sh "kubectl logs job/portfolio-build-${BUILD_TAG}"
+                }
+            }
+        }
+        
+        stage('Deploy to Netlify') {
+            steps {
+                script {
+                    // Install Netlify CLI
+                    sh 'npm install -g netlify-cli'
+                    
+                    // Deploy to Netlify
+                    sh """
+                        netlify deploy \
+                          --prod \
+                          --dir=. \
+                          --site=${NETLIFY_SITE_ID} \
+                          --auth=${NETLIFY_AUTH_TOKEN}
+                    """
+                }
+            }
+        }
+        
+        stage('Cleanup') {
+            steps {
+                sh "kubectl delete job portfolio-build-${BUILD_TAG} --ignore-not-found=true"
+            }
+        }
+    }
+    
+    post {
+        always {
+            publishHTML([
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Test Report'
+            ])
+        }
+        success {
+            echo '✅ Deployed to Netlify successfully!'
+            echo "Visit: https://your-site.netlify.app"
+        }
+        failure {
+            echo '❌ Deployment failed!'
+            sh "kubectl logs job/portfolio-build-${BUILD_TAG} || true"
+        }
+    }
+}
