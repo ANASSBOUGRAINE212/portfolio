@@ -243,15 +243,15 @@ nav a.active {
 /* Skills specific styles */
 .skills-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    gap: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: 2rem;
     width: 100%;
 }
 
 .skill-category {
     background: var(--card-bg);
-    padding: 3rem;
-    border-radius: 2rem;
+    padding: 2rem;
+    border-radius: 1.5rem;
     box-shadow: 0 10px 30px rgba(104, 127, 229, 0.2);
     border: 1px solid rgba(104, 127, 229, 0.2);
     transition: var(--transition);
@@ -263,27 +263,29 @@ nav a.active {
 }
 
 .skill-category h3 {
-    font-size: 2.4rem;
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
     color: var(--primary);
     font-weight: 600;
     text-align: center;
 }
 
 .skill-item {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
     border-bottom: 1px dashed rgba(104, 127, 229, 0.3);
 }
 
 .skill-item:last-child {
     border: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .skill-name {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0;
     display: flex;
     justify-content: space-between;
 }

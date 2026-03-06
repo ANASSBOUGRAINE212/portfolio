@@ -120,19 +120,20 @@ npm run test:report
 docker build -f ci/Dockerfile -t portfolio:latest .
 
 # Run container
-docker run -d -p 8080:80 portfolio:latest
+docker run -d -p 8081:80 --name portfolio-app portfolio:latest
 
-# Access at http://localhost:8080
+# Access at http://localhost:8081
 ```
 
-### Using Docker Compose
+### Cleanup Docker
 
 ```bash
-# Start
-docker-compose -f ci/docker-compose.yml up -d
+# Stop and remove container
+docker stop portfolio-app
+docker rm portfolio-app
 
-# Stop
-docker-compose -f ci/docker-compose.yml down
+# Remove image
+docker rmi portfolio:latest
 ```
 
 ---
@@ -142,14 +143,34 @@ docker-compose -f ci/docker-compose.yml down
 ### Deploy to Kubernetes
 
 ```bash
-# Apply configuration
-kubectl apply -f k8s/deployment.yaml
+# Build Docker image first
+docker build -f ci/Dockerfile -t portfolio:latest .
+
+# Load image into Minikube
+minikube image load portfolio:latest
+
+# Deploy
+kubectl apply -f k8s/
 
 # Check status
 kubectl get pods
-kubectl get services
+kubectl get svc
 
-# Access at http://localhost:30080
+# Get URL
+minikube service portfolio-service --url
+```
+
+### Cleanup Kubernetes
+
+```bash
+# Delete deployment and service
+kubectl delete -f k8s/
+
+# Delete old test jobs
+kubectl delete job --all
+
+# Remove image from Minikube
+minikube image rm portfolio:latest
 ```
 
 ---
