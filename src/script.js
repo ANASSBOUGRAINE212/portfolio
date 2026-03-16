@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const words = [
             "Network Engineer", 
             "Telecommunications Engineer",
-            "Cybersecurity engineer",
+            "devOps engineer",
             "Machine Learning Engineer",
             "Software Developer"
         ];
@@ -114,6 +114,87 @@ document.addEventListener('DOMContentLoaded', function() {
     if (skillsSection) {
         observer.observe(skillsSection);
     }
+    
+    // Project hover and click effects
+    const projectItems = document.querySelectorAll('.project-item');
+    const projectPreview = document.querySelector('.project-preview');
+    const projectsSection = document.getElementById('projects');
+    const previewImage = document.querySelector('.preview-image');
+    const previewTitle = document.querySelector('.preview-header h4');
+    const previewDescription = document.querySelector('.preview-info p');
+    const githubLink = document.querySelector('.github-link');
+    const closeButton = document.querySelector('.close-preview');
+    
+    let isPreviewSticky = false;
+    
+    projectItems.forEach(item => {
+        // Hover functionality
+        item.addEventListener('mouseenter', function() {
+            if (!isPreviewSticky) {
+                showPreview(this);
+            }
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            if (!isPreviewSticky) {
+                projectPreview.classList.remove('active');
+            }
+        });
+        
+        // Click functionality to make preview sticky
+        item.addEventListener('click', function() {
+            showPreview(this);
+            isPreviewSticky = true;
+            projectPreview.classList.add('sticky');
+        });
+    });
+    
+    // Close preview when leaving projects section
+    if (projectsSection) {
+        projectsSection.addEventListener('mouseleave', function() {
+            if (!isPreviewSticky) {
+                projectPreview.classList.remove('active');
+            } else {
+                // Also close sticky preview when leaving section
+                projectPreview.classList.remove('active', 'sticky');
+                isPreviewSticky = false;
+            }
+        });
+    }
+    
+    // Close button functionality
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            projectPreview.classList.remove('active', 'sticky');
+            isPreviewSticky = false;
+        });
+    }
+    
+    // Function to show preview
+    function showPreview(projectItem) {
+        const imageUrl = projectItem.getAttribute('data-image');
+        const title = projectItem.querySelector('h3').textContent;
+        const description = projectItem.getAttribute('data-description');
+        const githubUrl = projectItem.getAttribute('data-github');
+        
+        if (previewImage && previewTitle && previewDescription && githubLink) {
+            previewImage.src = imageUrl;
+            previewTitle.textContent = title;
+            previewDescription.textContent = description;
+            githubLink.href = githubUrl;
+            projectPreview.classList.add('active');
+        }
+    }
+    
+    // Click outside to close sticky preview
+    document.addEventListener('click', function(e) {
+        if (isPreviewSticky && 
+            !projectPreview.contains(e.target) && 
+            !Array.from(projectItems).some(item => item.contains(e.target))) {
+            projectPreview.classList.remove('active', 'sticky');
+            isPreviewSticky = false;
+        }
+    });
     
     // Header scroll effect
     const header = document.querySelector('header');

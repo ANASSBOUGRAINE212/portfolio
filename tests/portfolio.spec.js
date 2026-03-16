@@ -42,10 +42,10 @@ test.describe('Portfolio Website Tests', () => {
     });
 
     test('loads external CSS and JavaScript files', async ({ page }) => {
-      const cssLink = page.locator('link[href="styles.css"]');
+      const cssLink = page.locator('link[href="src/styles.css"]');
       await expect(cssLink).toHaveAttribute('rel', 'stylesheet');
       
-      const scriptTag = page.locator('script[src="script.js"]');
+      const scriptTag = page.locator('script[src="src/script.js"]');
       await expect(scriptTag).toHaveCount(1);
     });
 
@@ -63,7 +63,7 @@ test.describe('Portfolio Website Tests', () => {
     test('displays profile image', async ({ page }) => {
       const profileImg = page.locator('.home-img img');
       await expect(profileImg).toBeVisible();
-      await expect(profileImg).toHaveAttribute('src', 'me.jpeg');
+      await expect(profileImg).toHaveAttribute('src', 'assets/me.jpeg');
       await expect(profileImg).toHaveAttribute('alt', 'Anas Bougraine');
     });
 
@@ -137,27 +137,41 @@ test.describe('Portfolio Website Tests', () => {
     });
 
     test('displays all skill categories', async ({ page }) => {
-      await expect(page.getByRole('heading', { name: 'Technical Skills' })).toBeVisible();
-      await expect(page.getByRole('heading', { name: 'Data & ML' })).toBeVisible();
-      await expect(page.getByRole('heading', { name: 'Tools & Systems' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Languages' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Web Development' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'DevOps & Tools' })).toBeVisible();
     });
 
     test('displays skill items', async ({ page }) => {
-      await expect(page.getByText('Python')).toBeVisible();
-      await expect(page.getByText('Java')).toBeVisible();
-      await expect(page.getByText('HTML/CSS/JS')).toBeVisible();
+      await expect(page.locator('#skills').getByText('Python').first()).toBeVisible();
+      await expect(page.locator('#skills').getByText('Java').first()).toBeVisible();
+      await expect(page.locator('#skills').getByText('JavaScript').first()).toBeVisible();
     });
   });
 
   test.describe('Projects Section', () => {
     
-    test('displays GitHub link', async ({ page }) => {
+    test('displays project titles and tech stacks', async ({ page }) => {
       await page.getByRole('link', { name: 'Projects' }).click();
       await page.waitForTimeout(1000);
       
-      const githubLink = page.locator('#projects').getByRole('link', { name: /github/i });
-      await expect(githubLink).toBeVisible();
-      await expect(githubLink).toHaveAttribute('href', /github.com/);
+      await expect(page.getByText('🏥 HealthNexus')).toBeVisible();
+      await expect(page.getByText('🛡️ CyberGuard')).toBeVisible();
+      await expect(page.getByText('📡 QAM Modem Design')).toBeVisible();
+      await expect(page.getByText('🔄 Modulation Techniques')).toBeVisible();
+    });
+
+    test('displays project preview on hover', async ({ page }) => {
+      await page.getByRole('link', { name: 'Projects' }).click();
+      await page.waitForTimeout(1000);
+      
+      const projectItem = page.locator('.project-item').first();
+      const projectPreview = page.locator('.project-preview');
+      
+      await projectItem.hover();
+      await page.waitForTimeout(500);
+      
+      await expect(projectPreview).toHaveClass(/active/);
     });
   });
 
